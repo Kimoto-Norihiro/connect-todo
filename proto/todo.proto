@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package todo.v1;
+
+option go_package = "github.com/Kimoto-Norihiro/connect-todo/server/gen/todo/v1;todo";
+
+service TODOService {
+  rpc CreateTODO(CreateTODORequest) returns (CreateTODOResponse) {}
+	rpc ListTODOs(ListTODOsRequest) returns (ListTODOsResponse) {}
+	rpc UpdateTODO(UpdateTODORequest) returns (UpdateTODOResponse) {}
+	rpc DeleteTODO(DeleteTODORequest) returns (DeleteTODOResponse) {}
+}
+
+message CreateTODORequest {
+}
+
+message CreateTODOResponse {
+}
+
+message ListTODOsRequest {
+}
+
+message ListTODOsResponse {
+}
+
+message UpdateTODORequest {
+}
+
+message UpdateTODOResponse {
+}
+
+message DeleteTODORequest {
+}
+
+message DeleteTODOResponse {
+}
