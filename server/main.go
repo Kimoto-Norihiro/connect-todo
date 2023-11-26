@@ -10,6 +10,8 @@ import (
 	"github.com/Kimoto-Norihiro/connect-todo/server/api/todoservice/v1/todoservicev1connect"
 	"github.com/Kimoto-Norihiro/connect-todo/server/database"
 	"github.com/Kimoto-Norihiro/connect-todo/server/services/todoservice"
+
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -19,10 +21,19 @@ func main() {
 	}
 	todoservice := todoservice.NewTODOService(db)
 	mux := http.NewServeMux()
-	mux.Handle(todoservicev1connect.NewTODOServiceHandler(todoservice))
+
+	path, handler := todoservicev1connect.NewTODOServiceHandler(todoservice)
+	mux.Handle(path, handler)
+
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
+		AllowedHeaders: []string{"Connect-Protocol-Version", "Content-Type"},
+	})
+	
+	corsHandler := c.Handler(h2c.NewHandler(mux, &http2.Server{}))
 	http.ListenAndServe(
 		"localhost:8080",
-		// Use h2c so we can serve HTTP/2 without TLS.
-		h2c.NewHandler(mux, &http2.Server{}),
+		corsHandler,
 	)
 }

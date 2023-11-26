@@ -2,13 +2,13 @@ import { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 import { InputWithError } from '../../components/parts/InputWithError'
 import { useForm } from 'react-hook-form'
-import { Todo } from '../../types/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import * as yup from 'yup';
+import { TODO } from '@/api/todoservice/v1/todo_pb'
 
-type TodoCreateRequest = Pick<Todo, 'title' | 'body'>
+type TodoCreateRequest = Pick<TODO, 'title'>
 
 const todoSchema = yup.object().shape({
   title: yup.string().required('required input'),
@@ -34,7 +34,6 @@ const CreateTodo: NextPage = () => {
     handleSubmit(async (data) => {
       const response = await createTodo({
         title: data.title,
-        body: data.body,
       })
       console.log(response)
       router.back()
@@ -63,11 +62,6 @@ const CreateTodo: NextPage = () => {
         >
           <InputWithError 
             name='title'
-            register={register}
-            errors={errors}
-          />
-          <InputWithError 
-            name='body'
             register={register}
             errors={errors}
           />

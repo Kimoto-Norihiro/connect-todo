@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useCommonModal } from "../../contexts/modal-context";
-import { Todo } from "../../types/types";
 import { useRouter } from 'next/router';
 import { DeleteModal } from "./DeleteModal";
+import { TODO } from "@/api/todoservice/v1/todo_pb";
 
 type Props = {
-  todo: Todo
+  todo: TODO
 }
 
 const TodoCard = ({todo}: Props) => {
@@ -25,13 +25,6 @@ const TodoCard = ({todo}: Props) => {
           onClick={() => setDone(!done)}
         ></div>
         <h2 className={`text-lg font-bold ml-4 ${done && 'line-through'}`}>{todo.title}</h2>
-      </div>
-      <div className="flex">
-        {
-          todo.tags.map((tag,index) => (
-            <div key={index} className='px-1 border-2 border-gray-500 rounded-lg color-gray-500 mr-1'>{tag.name}</div>
-          ))
-        }
       </div>
       <div className="flex">
         {

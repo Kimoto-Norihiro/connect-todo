@@ -147,14 +147,9 @@ export class ListTODOsResponse extends Message<ListTODOsResponse> {
  */
 export class UpdateTODORequest extends Message<UpdateTODORequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: todoservice.v1.TODO todo = 1;
    */
-  id = "";
-
-  /**
-   * @generated from field: string title = 2;
-   */
-  title = "";
+  todo?: TODO;
 
   constructor(data?: PartialMessage<UpdateTODORequest>) {
     super();
@@ -164,8 +159,7 @@ export class UpdateTODORequest extends Message<UpdateTODORequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "todoservice.v1.UpdateTODORequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "todo", kind: "message", T: TODO },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateTODORequest {
@@ -221,9 +215,9 @@ export class UpdateTODOResponse extends Message<UpdateTODOResponse> {
  */
 export class DeleteTODORequest extends Message<DeleteTODORequest> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id = "";
+  id = 0;
 
   constructor(data?: PartialMessage<DeleteTODORequest>) {
     super();
@@ -233,7 +227,7 @@ export class DeleteTODORequest extends Message<DeleteTODORequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "todoservice.v1.DeleteTODORequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DeleteTODORequest {
@@ -289,9 +283,9 @@ export class DeleteTODOResponse extends Message<DeleteTODOResponse> {
  */
 export class TODO extends Message<TODO> {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: int32 id = 1;
    */
-  id = "";
+  id = 0;
 
   /**
    * @generated from field: string title = 2;
@@ -306,7 +300,7 @@ export class TODO extends Message<TODO> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "todoservice.v1.TODO";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 

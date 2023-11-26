@@ -1,44 +1,40 @@
 syntax = "proto3";
 
-package todoservice.v1;;
+package todoservice.v1;
+;
 
 service TODOService {
   rpc CreateTODO(CreateTODORequest) returns (CreateTODOResponse) {}
-	rpc ListTODOs(ListTODOsRequest) returns (ListTODOsResponse) {}
-	rpc UpdateTODO(UpdateTODORequest) returns (UpdateTODOResponse) {}
-	rpc DeleteTODO(DeleteTODORequest) returns (DeleteTODOResponse) {}
+  rpc ListTODOs(ListTODOsRequest) returns (ListTODOsResponse) {}
+  rpc UpdateTODO(UpdateTODORequest) returns (UpdateTODOResponse) {}
+  rpc DeleteTODO(DeleteTODORequest) returns (DeleteTODOResponse) {}
 }
 
 message CreateTODORequest {
-	string title = 1;
+  string title = 1;
 }
 
-message CreateTODOResponse {
-}
+message CreateTODOResponse {}
 
-message ListTODOsRequest {
-}
+message ListTODOsRequest {}
 
 message ListTODOsResponse {
-	repeated TODO todos = 1;
+  repeated TODO todos = 1;
 }
 
 message UpdateTODORequest {
-	string id = 1;
-	string title = 2;
+  TODO todo = 1;
 }
 
-message UpdateTODOResponse {
-}
+message UpdateTODOResponse {}
 
 message DeleteTODORequest {
-	string id = 1;
+	int32 id = 1;
 }
 
-message DeleteTODOResponse {
-}
+message DeleteTODOResponse {}
 
 message TODO {
-	string id = 1;
-	string title = 2;
+  int32 id = 1;
+  string title = 2;
 }

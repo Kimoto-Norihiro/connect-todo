@@ -2,13 +2,13 @@ import { NextPage, GetStaticPaths, GetStaticProps } from 'next'
 import React, { useEffect, useState } from 'react'
 import { InputWithError } from '../../components/parts/InputWithError'
 import { useForm } from 'react-hook-form'
-import { Todo, Tag } from '../../types/types';
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup';
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { TODO } from '@/api/todoservice/v1/todo_pb'
 
-type TodoUpdateRequest = Pick<Todo, 'title' | 'body' | 'tags'>
+type TodoUpdateRequest = Pick<TODO, 'title'>
 
 type Props = {
   id: string
@@ -22,7 +22,6 @@ const EditTodo: NextPage<Props> = ({ id }) => {
   const router = useRouter()
   const [err, setErr] = useState('')
   const [todo, setTodo] = useState<TodoUpdateRequest>()
-  const [tags, setTags] = useState<Tag[]>([])
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<TodoUpdateRequest>({
     resolver: yupResolver(todoSchema),
   });
@@ -43,8 +42,6 @@ const EditTodo: NextPage<Props> = ({ id }) => {
     handleSubmit(async (data) => {
       const response = await updateTodo({
         title: data.title,
-        body: data.body,
-        tags: data.tags,
       })
       console.log(response)
       router.back()
@@ -57,8 +54,6 @@ const EditTodo: NextPage<Props> = ({ id }) => {
   useEffect(() => {
     if (todo) {
       setValue('title', todo?.title || '')
-      setValue('body', todo?.body || '')
-      setValue('tags', todo?.tags || [])
     }
   },[todo])
 
@@ -79,28 +74,6 @@ const EditTodo: NextPage<Props> = ({ id }) => {
             register={register}
             errors={errors}
           />
-          <InputWithError 
-            name='body'
-            register={register}
-            errors={errors}
-          />
-          <div className='flex justify-between'>
-            <label>tag</label>
-            <div>
-              {
-                todo?.tags.map((tag: Tag) => {
-                  return (
-                    <div key={tag.id}>
-                      {tag.name}
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </div>
-          {
-            err ? <div className='text-red-800 text-sm'>{err}</div> : <div className='h-5'></div>
-          }
           <div className='flex justify-center mt-5'>
             <div className='bg-gray-200 py-1 px-3 rounded-lg'>
               <button type='submit'>submit</button>

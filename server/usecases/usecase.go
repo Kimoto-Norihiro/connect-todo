@@ -1,10 +1,14 @@
 package usecases
 
-import "context"
+import (
+	"context"
+
+	todoservicev1 "github.com/Kimoto-Norihiro/connect-todo/server/api/todoservice/v1"
+)
 
 type ITODOUsecase interface {
-	CreateTODO(ctx context.Context) error
-	ListTODOs(ctx context.Context) error
-	UpdateTODO(ctx context.Context) error
-	DeleteTODO(ctx context.Context) error
+	CreateTODO(ctx context.Context, title string) error
+	ListTODOs(ctx context.Context) ([]*todoservicev1.TODO, error)
+	UpdateTODO(ctx context.Context, todo *todoservicev1.TODO) error
+	DeleteTODO(ctx context.Context, id int32) error
 }
