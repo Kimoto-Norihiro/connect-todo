@@ -22,6 +22,12 @@ func NewTODOUsecase(db *sql.DB, repo repositories.ITODORepository) *TODOUsecase 
 
 func (u TODOUsecase) CreateTODO(ctx context.Context, title string) (err error) {
 	tx, err := u.db.BeginTx(ctx, nil)
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+
 	if err != nil {
 		return err
 	}
@@ -47,6 +53,12 @@ func (u TODOUsecase) ListTODOs(ctx context.Context) ([]*todoservicev1.TODO, erro
 
 func (u TODOUsecase) UpdateTODO(ctx context.Context, todo *todoservicev1.TODO) error {
 	tx, err := u.db.BeginTx(ctx, nil)
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+		}
+	}()
+
 	if err != nil {
 		return err
 	}

@@ -7,52 +7,13 @@ import { createPromiseClient } from "@bufbuild/connect";
 import { TODOService } from '../api/todoservice/v1/todo_connectweb';
 import { createConnectTransport } from '@bufbuild/connect-web';
 import { TODO } from '@/api/todoservice/v1/todo_pb'
+import { listTodos, createTodo } from '@/handlers/todo_handlers';
 
 const MyPage: NextPage = () => {
-  const router = useRouter()
-  const { showModal } = useCommonModal()
   const [todos, setTodos] = useState<TODO[]>([])
 
-  const transport = createConnectTransport({
-    baseUrl: "http://localhost:8080",
-  });
-  const client = createPromiseClient(TODOService, transport);
-
-  const createTodo = async () => {
-    const res = await client.createTODO({
-      title: "test",
-    })
-    console.log(res)
-  };
-  
-  const listTodos = async () => {
-    try {
-      const res = await client.listTODOs({})
-      console.log(res)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const deleteTodo = async (id: number) => {
-    const res = await client.deleteTODO({
-      id: 1,
-    })
-    console.log(res)
-  }
-
-  const updateTodo = async () => {
-    const res = await client.updateTODO({
-      todo: {
-        id: 1,
-        title: "test",
-      }
-    })
-    console.log(res)
-  }
-
   useEffect(() => {
-    listTodos()
+    listTodos(setTodos)
   }, [])
 
   return (
@@ -64,7 +25,7 @@ const MyPage: NextPage = () => {
             todos && todos.length !== 0 ? (
               todos.map((todo, index) => {                
                 return (    
-                  <TodoCard key={index} todo={todo}/>
+                  <TodoCard key={index} todo={todo} setTodos={setTodos}/>
                 )
               })
             ) : (

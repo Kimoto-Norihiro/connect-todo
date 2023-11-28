@@ -13,14 +13,15 @@ func Conn() (*sql.DB, error) {
 		return nil, err
 	}
 	c := mysql.Config{
-		DBName:    "connect_todo",
-		User:      "n000r111",
-		Passwd:    "password",
-		Addr:      "localhost:3306",
-		Net:       "tcp",
-		ParseTime: true,
-		Collation: "utf8mb4_unicode_ci",
-		Loc:       jst,
+		DBName:               "connect_todo",
+		User:                 "n000r111",
+		Passwd:               "password",
+		Addr:                 "localhost:3306",
+		Net:                  "tcp",
+		ParseTime:            true,
+		Collation:            "utf8mb4_unicode_ci",
+		Loc:                  jst,
+		AllowNativePasswords: true,
 	}
 	db, err := sql.Open("mysql", c.FormatDSN())
 	if err != nil {

@@ -1,20 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useCommonModal } from "../../contexts/modal-context";
-import { useRouter } from 'next/router';
 import { DeleteModal } from "./DeleteModal";
 import { TODO } from "@/api/todoservice/v1/todo_pb";
+import { deleteTodo, listTodos, updateTodo } from "@/handlers/todo_handlers";
 
 type Props = {
   todo: TODO
+  setTodos: React.Dispatch<React.SetStateAction<TODO[]>>
 }
 
-const TodoCard = ({todo}: Props) => {
+const TodoCard = ({ todo, setTodos }: Props) => {
   const { showModal } = useCommonModal();
-  const router = useRouter()
   const [done, setDone] = useState(false)
-  
-  const deleteTodo = async () => {
-    
+  const [isEdit, setIsEdit] = useState(false)
+  const [title, setTitle] = useState(todo.title)
+
+  const onEnterDown = async (e: React.KeyboardEvent) => {
+		if (e.key == "Enter") {
+      await updateTodo({
+        id: todo.id,
+        title,
+      } as TODO)
+      setIsEdit(false)
+      listTodos(setTodos)
+    }
   }
 
   return (
@@ -24,30 +33,42 @@ const TodoCard = ({todo}: Props) => {
           className={`h-3 w-3 rounded-lg ${done ? 'bg-green-500' : 'border-2 border-black'}`}
           onClick={() => setDone(!done)}
         ></div>
-        <h2 className={`text-lg font-bold ml-4 ${done && 'line-through'}`}>{todo.title}</h2>
+        {
+          isEdit ? (
+            <input 
+              className='rounded-sm px-1 text-lg font-bold ml-3' 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={onEnterDown}
+              onBlur={() => {
+                setIsEdit(false)
+              }}
+            />
+          ) : (
+            <h2 
+              className={`text-lg font-bold ml-4 ${done && 'line-through'}`}
+              onClick={() => setIsEdit(true)}
+            >
+              {todo.title}
+            </h2>
+          )
+        }
       </div>
       <div className="flex">
         {
-          done ? (
+          done && (
             <div 
               className="text-red-500 hover:text-red-700 ml-4"
               onClick={() => 
                 showModal(
                   <DeleteModal 
                     message="are you really delete it ?"
-                    deleteAction={deleteTodo}
+                    deleteAction={() => deleteTodo(todo.id)}
                   />
                 )
               }
             >
               delete
-            </div>
-          ) : (
-            <div 
-              className="text-green-500 hover:text-green-700"
-              onClick={() => router.push(`/todo/${todo.id}`)}
-            >
-              edit
             </div>
           )
         }
