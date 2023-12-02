@@ -19,7 +19,7 @@ func NewTODORepository(db *sql.DB) *TODORepository {
 }
 
 func (r TODORepository) CreateTODO(ctx context.Context, tx *sql.Tx, title string) error {
-	_, err := tx.ExecContext(ctx, "INSERT INTO todos (title) VALUES (?)", title)
+	_, err := tx.ExecContext(ctx, "INSERT INTO todos (title, done) VALUES (?, ?)", title, false)
 	if err != nil {
 		log.Println(err)
 		return err
@@ -38,7 +38,7 @@ func (r TODORepository) ListTODOs(ctx context.Context, db *sql.DB) ([]*todoservi
 
 	for rows.Next() {
 		todo := &todoservicev1.TODO{}
-		err := rows.Scan(&todo.Id, &todo.Title)
+		err := rows.Scan(&todo.Id, &todo.Title, &todo.Done)
 		if err != nil {
 			return nil, err
 		}
@@ -49,7 +49,7 @@ func (r TODORepository) ListTODOs(ctx context.Context, db *sql.DB) ([]*todoservi
 }
 
 func (r TODORepository) UpdateTODO(ctx context.Context, tx *sql.Tx, todo *todoservicev1.TODO) error {
-	_, err := tx.ExecContext(ctx, "UPDATE todos SET title = ? WHERE id = ?", todo.Title, todo.Id)
+	_, err := tx.ExecContext(ctx, "UPDATE todos SET title = ?, done = ? WHERE id = ?", todo.Title, todo.Done, todo.Id)
 	if err != nil {
 		return err
 	}

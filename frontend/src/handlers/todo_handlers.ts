@@ -10,8 +10,8 @@ const client = createPromiseClient(TODOService, transport);
 
 export const createTodo = async () => {
 	const res = await client.createTODO({
-		title: "test",
-	})
+		title: "new todo",
+	} as TODO)
 	console.log(res)
 };
 

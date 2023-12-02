@@ -32,7 +32,10 @@ const MyPage: NextPage = () => {
               <p>no todo</p>
             )
           }
-          <div onClick={createTodo}>
+          <div onClick={async () => {
+            await createTodo()
+            listTodos(setTodos)
+          }}>
             <p className='text-blue-500 hover:text-blue-700'>+ add todo</p>
           </div>
         </div>

@@ -11,7 +11,6 @@ type Props = {
 
 const TodoCard = ({ todo, setTodos }: Props) => {
   const { showModal } = useCommonModal();
-  const [done, setDone] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [title, setTitle] = useState(todo.title)
 
@@ -30,8 +29,15 @@ const TodoCard = ({ todo, setTodos }: Props) => {
     <div className="flex rounded-lg p-4 py-2 items-center justify-between border-2 border-gray-500 m-1">
       <div className="flex items-center w-1/2">
         <div 
-          className={`h-3 w-3 rounded-lg ${done ? 'bg-green-500' : 'border-2 border-black'}`}
-          onClick={() => setDone(!done)}
+          className={`h-3 w-3 rounded-lg ${todo.done ? 'bg-green-500' : 'border-2 border-black'}`}
+          onClick={async () => {
+            await updateTodo({
+              id: todo.id,
+              title,
+              done: !todo.done,
+            } as TODO)
+            listTodos(setTodos)
+          }}
         ></div>
         {
           isEdit ? (
@@ -46,7 +52,7 @@ const TodoCard = ({ todo, setTodos }: Props) => {
             />
           ) : (
             <h2 
-              className={`text-lg font-bold ml-4 ${done && 'line-through'}`}
+              className={`text-lg font-bold ml-4 ${todo.done && 'line-through'}`}
               onClick={() => setIsEdit(true)}
             >
               {todo.title}
@@ -56,7 +62,7 @@ const TodoCard = ({ todo, setTodos }: Props) => {
       </div>
       <div className="flex">
         {
-          done && (
+          todo.done && (
             <div 
               className="text-red-500 hover:text-red-700 ml-4"
               onClick={() => 

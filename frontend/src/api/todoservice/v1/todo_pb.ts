@@ -292,6 +292,11 @@ export class TODO extends Message<TODO> {
    */
   title = "";
 
+  /**
+   * @generated from field: bool done = 3;
+   */
+  done = false;
+
   constructor(data?: PartialMessage<TODO>) {
     super();
     proto3.util.initPartial(data, this);
@@ -302,6 +307,7 @@ export class TODO extends Message<TODO> {
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
     { no: 1, name: "id", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 2, name: "title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "done", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): TODO {
