@@ -6,7 +6,7 @@ import (
 	todoservicev1 "github.com/Kimoto-Norihiro/connect-todo/server/api/todoservice/v1"
 )
 
-//go:generate mockgen -source=$GOFILE -destination=../mocks/mock_$GOFILE -package=mocks
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOPACKAGE/mock_$GOFILE
 
 type ITODOUsecase interface {
 	CreateTODO(ctx context.Context, title string) error

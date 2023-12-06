@@ -7,6 +7,8 @@ import (
 	todoservicev1 "github.com/Kimoto-Norihiro/connect-todo/server/api/todoservice/v1"
 )
 
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOPACKAGE/mock_$GOFILE
+
 type ITODORepository interface {
 	CreateTODO(ctx context.Context, tx *sql.Tx, title string) error
 	ListTODOs(ctx context.Context, db *sql.DB) ([]*todoservicev1.TODO, error)
